@@ -1,7 +1,3 @@
-# $language = "VBScript"
-# $interface = "1.0"
-
-
 
 'This script switches the phone numbers in the Basic Details section in a CLINiCOM
 'PMI record. Sometimes mobile and landline numbers are recorded in the wrong fields.
