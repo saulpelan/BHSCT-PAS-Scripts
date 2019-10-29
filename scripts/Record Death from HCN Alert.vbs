@@ -1,6 +1,36 @@
 # $language = "VBScript"
 # $interface = "1.0"
 
+
+
+'	V1.1
+'	Last updated 29/10/19
+'	Saul Pelan
+'
+'	┌Description────────────────────────────────────────────────────────────────────┐
+'	│ This script will record patient deaths using the Health & Care number provide │
+'	│ in an email alert from the Health & Care index.                               │
+'	└───────────────────────────────────────────────────────────────────────────────┘
+' 
+'	┌Instructions───────────────────────────────────────────────────────────────────┐
+'	│ 1.	In MS Outlook, select the HCN alert email so that it is showing in the  │
+'	│ 	preview pane.                                                           │
+'	│ 2.	Ensure you are connected and logged in to the correct hospital's PAS.   │
+'	│ 3.	Run this script in CRT. It will lookup the patient using the H&C number │
+'	│	supplied in the email and get the date of death from the H&C compare    │
+'       │	feature on CLINiCOM. Then it will open the Record Patient Death         │
+'	│	function and fill out the form and leave you to enter "Y" at the end.	│
+'	│ 4.	You have 60 seconds to press "Y". Once pressed the script will mark the │
+'	│	email as read and move it to the HCN Updates folder. If you take longer │
+'	│	than 60 seconds you will have to enter "YES" and move the email manually│
+'	│                                                                               │
+'	│ Tip: it may be helpful to have both Outlook and CRT visible so you can see    │
+'	│ what is happening. Press Win+Left Arrow or Win+Right Arrow on each window to  │
+'	│ split them on the screen.                                                     │
+'       └───────────────────────────────────────────────────────────────────────────────┘
+
+
+
 Dim DoD
 
 Sub Main()
@@ -36,7 +66,7 @@ Sub Main()
 					crt.Sleep(1)
 					If UCase(crt.Screen.Get(22,12,22,12)) = "Y" Then
 						crt.Screen.Send(Chr(13))
-						'MarkEmailComplete()
+						MoveEmail()
 					Else
 						Exit Sub
 					End If						
@@ -112,6 +142,14 @@ Function GetHCNFromEmail()
 	GetHCNFromEmail = StripNonNumerics(hcn)
 End Function
 
+Function MoveEmail()
+	set obj = GetObject(,"Outlook.Application")
+	set ns = obj.GetNameSpace("MAPI")
+	set email = obj.ActiveExplorer.Selection(1)
+	email.UnRead = False
+	email.Move ns.Folders("PAS.Support-SM").Folders("Inbox")
+End Function
+
 Function GetEmailSender()
 	GetEmailSender = GetEmailSenderName() & " <" & GetEmailSenderAddress() & ">" 
 End Function
@@ -144,12 +182,6 @@ Function GetEmailSenderAddress()
 	End If
 End Function
 
-sub MarkEmailComplete()
-	set obj = GetObject(,"Outlook.Application")
-	set email = obj.ActiveExplorer.Selection(1)
-	email.TaskCompletedDate = "20/08/19"
-
-End Sub
 
 Function StripNonNumerics(ByVal num)
     newString = ""
