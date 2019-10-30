@@ -4,7 +4,7 @@
 
 
 '	V1.1
-'	Last updated 29/10/19
+'	Last updated 30/10/19
 '	Saul Pelan
 '
 '	┌Description────────────────────────────────────────────────────────────────────┐
@@ -147,7 +147,7 @@ Function MoveEmail()
 	set ns = obj.GetNameSpace("MAPI")
 	set email = obj.ActiveExplorer.Selection(1)
 	email.UnRead = False
-	email.Move ns.Folders("PAS.Support-SM").Folders("Inbox")
+	email.Move ns.Folders("PAS.Support-SM").Folders("Inbox").Folders("HCN Updates")
 End Function
 
 Function GetEmailSender()
