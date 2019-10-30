@@ -3,12 +3,12 @@
 
 
 
-'	V1.1
+'	V1.1.1
 '	Last updated 30/10/19
 '	Saul Pelan
 '
 '	┌Description────────────────────────────────────────────────────────────────────┐
-'	│ This script will record patient deaths using the Health & Care number provide │
+'	│ This script will record patient deaths using the Health & Care number provided│
 '	│ in an email alert from the Health & Care index.                               │
 '	└───────────────────────────────────────────────────────────────────────────────┘
 ' 
@@ -32,11 +32,17 @@
 
 
 Dim DoD
+Dim emailHosp
+Dim activeHosp
 
 Sub Main()
 	If GetEmailSubject() = "ALERT - MANUAL UPDATE REQUESTED ON PAS" Then
 		If InStr(GetEmailBody(), "Date of Death: ") Then
 			hcn = GetHCNFromEmail()
+			If GetActiveHospital() <> emailHosp Then
+				MsgBox "Active hospital's PAS does not match email. Script stopped."
+				Exit Sub
+			End If
 			If Not (crt.Screen.Get(1,21,1,59) = "R e c o r d   P a t i e n t   D e a t h" And crt.Screen.Get(2,6,2,30) = "Patient Selection Details") Then
 				OpenFunction "RPD", "R e c o r d   P a t i e n t   D e a t h"
 			End If
@@ -136,8 +142,15 @@ Function GetHCNFromEmail()
 	Dim hcn
 	If words.Item(39) = "MATER " Then
 		hcn = words.Item(46) & words.Item(47) & words.Item(48)
-	Elseif words.Item(39) = "BELFAST " OR words.Item(39) = "ROYAL " Then
+		emailHosp = "MIH"
+	Elseif words.Item(39) = "BELFAST " Then 
 		hcn = words.Item(47) & words.Item(48) & words.Item(49)
+		emailHosp = "BCH"
+	Elseif words.Item(39) = "ROYAL " Then
+		hcn = words.Item(47) & words.Item(48) & words.Item(49)
+		emailHosp = "RGH"
+	Else
+		hcn = "ERROR"
 	End If
 	GetHCNFromEmail = StripNonNumerics(hcn)
 End Function
@@ -182,7 +195,6 @@ Function GetEmailSenderAddress()
 	End If
 End Function
 
-
 Function StripNonNumerics(ByVal num)
     newString = ""
     For i = 1 To Len(num)
@@ -194,4 +206,16 @@ Function StripNonNumerics(ByVal num)
         newString = " "
     End If
     StripNonNumerics = newString
+End Function
+
+Function GetActiveHospital()
+	If InStr(crt.Window.Caption, "Belfast City") Then
+		GetActiveHospital = "BCH"
+	Elseif InStr(crt.Window.Caption, "Mater") Then
+		GetActiveHospital = "MIH"
+	Elseif InStr(crt.Window.Caption, "Royal Group") Then
+		GetActiveHospital = "RGH"
+	Else
+		GetActiveHospital = "ERROR"
+	End If
 End Function
