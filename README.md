@@ -6,7 +6,7 @@ The BHSCT* has a dedicated team that maintains its PAS*. The following tasks are
 1. Setting up and maintaining virtual printers and print queues
 1. Maintaining quality of data (validating information held on records)
 
-After a short time working in the BHSCT PAS team, I came across the feature in CRT that allows users to run scripts. 
+After a short time working in the BHSCT PAS team, I came across the feature in CRT that allows users to run scripts. I instantly realised the advantages of this and started creating scripts to automate certain processes. 
 ## * Terminology
 ### PAS
 Every hospital trust in the UK relies on a PAS (Patient Administration System) to manage its day to day operation. The BHSCT among other trusts in Northern Ireland currently use a PAS called CLINiCOM, a system developed by Shared Medical Systems Limited (SMS UK) in the 1980s. It is a unix mainframe video terminal (VT220) system, originally accessed by terminals but today is accessed by PCs using terminal emulation software.
