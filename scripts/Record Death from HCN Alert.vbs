@@ -3,8 +3,6 @@
 
 
 
-'	V1.1.1
-'	Last updated 30/10/19
 '	Saul Pelan
 '
 '	┌Description────────────────────────────────────────────────────────────────────┐
@@ -37,7 +35,11 @@ Dim activeHosp
 
 Sub Main()
 	If GetEmailSubject() = "ALERT - MANUAL UPDATE REQUESTED ON PAS" Then
-		If InStr(GetEmailBody(), "Date of Death: ") Then
+		If InStr(GetEmailBody(), "Date of Death: ") And Not InStr(GetEmailBody(), "<blank>") Then
+			If InStr(GetEmailBody(), "<blank>") Then
+				MsgBox "Email date of death is BLANK. You're going to have to look into this one yourself."
+				Exit Sub
+			End If 
 			hcn = GetHCNFromEmail()
 			If GetActiveHospital() <> emailHosp Then
 				MsgBox "Active hospital's PAS does not match email. Script stopped."
