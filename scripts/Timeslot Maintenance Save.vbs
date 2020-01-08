@@ -1,4 +1,4 @@
-﻿# $language = "VBScript"
+# $language = "VBScript"
 # $interface = "1.0"
 
 
@@ -42,7 +42,111 @@ Sub Main()
 		Exit Sub
 	End If
 	title = GetFunctionTitle()
-	If title = "M a i n t a i n   D o c t o r   S e s s i o n" Or title = "D o c t o r   T e m p l a t e" Then
+	If title = "M a i n t a i n   D o c t o r   S e s s i o n" Then
+		If InStr(GetFunctionSubtitle, "Maintain Timeslot") Then
+	
+			tscmd = GetText(7, 20, 7, 28)
+			row = crt.Screen.CurrentRow
+			col = crt.Screen.CurrentColumn
+			
+			'Check if we are adding a new timeslot
+			If tscmd = "ADD" Then
+				
+				'Check if Timeslot Stop field is empty
+				If GetText(9, 41, 9, 47) = "" Then
+					Msg "Must enter stop time when command is ADD"
+
+				'Check if Appt Type field is empty
+				Elseif GetText(12, 16, 12, 18) = "" Then
+					Send("")
+					GoToField(6)
+					Send("1")
+					SendSpecial("VT_F14") 'Display Appointment Type superhelp
+					ctime = Timer
+					
+					'Wait for Appointment Type superhelp to appear
+					Do While GetText(4, 55, 4, 71) <> "Appointment types"
+
+						'Check if more than 5 seconds has elapsed since trying to display superhelp
+						If Timer - ctime > 5 Then
+							Msg "Error when trying to use Appointment Type superhelp. Script stopped."
+							Exit Sub
+						End If
+					Loop
+
+					If GetText(4, 55, 4, 71) = "Appointment types" Then
+
+						'Check if second allowed appointment type is blank
+						If GetText(7, 55, 7, 57) = "" Then
+							Send("") 'Select the only available appointment type in the Superhelp list
+						Else
+							'Wait until Appt Type superhelp disappears (ie when an appt type is selected)
+							Do While GetText(4, 55, 4, 71) = "Appointment types"
+								If Timer - ctime > 20 Then
+									Msg "Hey wake up! You took too long to select an appointment type. Script stopped. Get back to work!"
+									Exit Sub
+								End If
+							Loop
+						End If
+					Else
+						Msg "I don't know what you've done. Script stopped."
+						Exit Sub
+					End If
+				End If
+				SaveTimeslot()
+				GoToField(3)
+				SendSpecial("VT_F14")
+
+			'Check if we are revising an existing timeslot
+			Elseif tscmd = "REVISE" Then
+
+				'Check if cursor is in the Timeslot Command field
+				If row = 7 Then
+					SaveTimeslot()
+					GoToField(2) 'Go back to the Timeslot Command field
+				Elseif row = 9 Then
+
+					'Check if cursor is at Timeslot Start field
+					If col >= 20 And col <= 26 Then
+						SaveTimeslot()
+						GoToField(3) 'Go back to Timeslot Start field	
+	
+					'Check if cursor is at Timeslot Stop field
+					Elseif col >= 41 And col <= 47 Then
+						SaveTimeslot()
+						GoToField(5) 'Go back to Timeslot Stop field
+					Else	
+						Msg  "Couldn't identify cursor column on row " & row & ". How did you manage that?!"
+					End If	
+				Elseif row = 16 Then
+					
+					'Check if cursor is at Timeslot Patients field
+					If col >= 22 And col <= 24 Then
+						SaveTimeslot()
+						GoToField(10) 'Go back to Timeslot Patients field
+					
+					'Check if cursor is at Report-To Location 
+					Elseif col >= 43 And col <= 47 Then
+						SaveTimeslot()
+						GoToField(11)
+					Else
+						Msg "Couldn't identify cursor column on row " & row & ". How did you manage that?!" 
+					End If
+				
+				'Check if cursor is anywhere on the terminal scroll list for appointment types
+				Elseif row >= 12 And row <= 15 Then
+					SaveTimeslot()
+					GoToField(6)
+					Send("1")
+				Else 
+					Msg "Invalid cursor position for script."
+				End If
+			End If
+		Else
+			Msg "Not yet in Timeslot Maintenance Page of " & title
+			Exit Sub
+		End If
+	Elseif title = "D o c t o r   T e m p l a t e" Then
 		If InStr(GetFunctionSubtitle, "Maintain Timeslot") Then
 	
 			tscmd = GetText(8, 20, 8, 28)
