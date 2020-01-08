@@ -1,4 +1,4 @@
-﻿# $language = "VBScript"
+# $language = "VBScript"
 # $interface = "1.0"
 
 
@@ -23,7 +23,7 @@
 '	┌Instructions───────────────────────────────────────────────────────────────────┐
 '	│ Run this script when you are at the Outpatients Maintain Timeslot page in the	│
 '	│ Doctor Template or Maintain Doctor Session function. You will be brought to	│
-'	│ the next timeslot and your cursor remain at the same field for the next slot.	│
+'	│ the next timeslot and your cursor remain at the same field for the next slot.	│									│
 '       └───────────────────────────────────────────────────────────────────────────────┘
 
 
@@ -37,7 +37,71 @@ Sub Main()
 		Exit Sub
 	End If
 	title = GetFunctionTitle()
-	If title = "M a i n t a i n   D o c t o r   S e s s i o n" Or title = "D o c t o r   T e m p l a t e" Then
+	If title = "M a i n t a i n   D o c t o r   S e s s i o n" Then
+		If InStr(GetFunctionSubtitle, "Maintain Timeslot") Then
+	
+			tscmd = GetText(7, 20, 7, 28)
+			row = crt.Screen.CurrentRow
+			col = crt.Screen.CurrentColumn
+			
+
+			If tscmd <> "REVISE" Then
+				GoToField(2)
+				Send("REVISE")
+			End If
+			
+			If row = 7 Then
+				If col <> 20 Then 'If cursor isn't at the first column of the field
+					SendSpecial("VT_SELECT") 'Moves cursor to start of field to overwrite any text
+				End If
+				Send("REVISE") 'Default timeslot command to 'revise'
+				SelectNextTimeslot()
+				GoToField(10) 'Go to the Timeslot Patients field to display further timeslot details
+				GoToField(2) 'Go back to the Timeslot Command field
+			Elseif row = 9 Then
+				'Check if cursor is at Timeslot Start field
+				If col >= 20 And col <= 26 Then
+					SelectNextTimeslot()
+					GoToField(3) 'Go back to Timeslot Start field
+
+				'Check if cursor is at Timeslot Stop field
+				Elseif col >= 41 And col <= 47 Then
+					GoToField(3) 'Navigate to Timeslot Start field so we can select a new one
+					SelectNextTimeslot()
+				Else	
+					Msg  "Couldn't identify cursor column on row " & row & ". How did you manage that?!"
+				End If	
+			Elseif row = 16 Then
+				
+				'Check if cursor is at Timeslot Patients field
+				If col >= 22 And col <= 24 Then
+					GoToField(3)
+					SelectNextTimeslot()
+					GoToField(10)
+				
+				'Check if cursor is at Report-To Location 
+				Elseif col >= 43 And col <= 47 Then
+					GoToField(3)
+					SelectNextTimeslot()
+					GoToField(11)
+				Else
+					Msg "Couldn't identify cursor column on row " & row & ". How did you manage that?!" 
+				End If
+			
+			'Check if cursor is anywhere on the terminal scroll list for appointment types
+			Elseif row >= 12 And row <= 15 Then
+				GoToField(3)
+				SelectNextTimeslot()
+				GoToField(6)
+				Send("1")
+			Else 
+				Msg "Invalid cursor position for script."
+			End If
+		Else
+			Msg "Not yet in Timeslot Maintenance Page of " & title
+			Exit Sub
+		End If
+	Elseif title = "D o c t o r   T e m p l a t e" Then
 		If InStr(GetFunctionSubtitle, "Maintain Timeslot") Then
 	
 			tscmd = GetText(8, 20, 8, 28)
