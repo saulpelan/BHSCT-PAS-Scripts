@@ -22,3 +22,5 @@ Due to CliniCom being a 24 row x 80 column terminal system, performing these tas
  * Perform full tasks at the single touch of a key
  * Extract information from the screen and export it to more user friendly format, such as Excel spreadsheets
  * Assist with navigation
+
+CRT runs the scripts, which can be mapped to a key or key combination. It provides a small API, with methods for getting text from the screen and sending string to the host. 
