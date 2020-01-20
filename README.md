@@ -1,21 +1,23 @@
-# CRT-PAS-Scripts
-## Background
-The BHSCT* has a dedicated team that maintains its PAS*. The following tasks are completed on a regular basis:
-1. Setting up and maintaining user accounts
-1. Setting up and maintaining clinic sessions (ongoing and ad hoc)
-1. Setting up and maintaining virtual printers and print queues
-1. Maintaining quality of data (validating information held on records)
+<img src="images/BHSCT%20Logo%20in%20Colour%20Cropped.jpg" height="50px"></img>
+# Introduction
+This repo is a portfolio of the scripts I have developed for the Belfast Health and Social Care Trust PAS (**P**atient **A**dministration **S**ystem) Support Team to aid the maintenance of the three Patient Administration Systems.
 
-After a short time working in the BHSCT PAS team, I came across the feature in CRT that allows users to run scripts. I instantly realised the advantages of this and started creating scripts to automate certain processes. 
-## * Terminology
-### PAS
-Every hospital trust in the UK relies on a PAS (Patient Administration System) to manage its day to day operation. The BHSCT among other trusts in Northern Ireland currently use a PAS called CLINiCOM, a system developed by Shared Medical Systems Limited (SMS UK) in the 1980s. It is a unix mainframe video terminal (VT220) system, originally accessed by terminals but today is accessed by PCs using terminal emulation software.
-### CRT
-The terminal emulation software used by BHSCT to access its PAS is a program called CRT developed by VanDyke Software, Inc., and it provides the ability to run scripts written in various different programming/scripting languages such as Python, VBScript, Ruby, and possibly others. 
-### Scripts
-With the use of scripts, certain maintenance tasks can be automated (such as recording deaths based on information from emails from the NI Health & Care Index, set up new users, tidy up/validate recorded patient phone numbers, etc).
-CRT relies on a script engine to run scripts written in a particular language. BHSCT doesn't provide its users with script engines of any sort for Ruby, Python, etc - however it does provide the Microsoft Office suite which includes support for VBScript. Therefore all scripts listed are written in VBScript.
-### BHSCT
-The Belfast Health & Social Care Trust
+## CliniCom Patient Administration System
+The three Belfast Trust hospitals each run on a PAS system called CliniCom, a mainframe system developed roughly in the late 1980s by Shared Medical Systems Limited (SMS UK) and now supported by [DXC Technology](https://dxc.technology). Clinicom was originally designed to be accessed by "dumb" terminals but is now accessed via terminal emulation software on PCs.
 
-*Last updated 22.10.19 12:38 Saul Pelan*
+![CliniCom AMS Function Set Menu](images/CliniCom%20AMS%20Function%20Set.PNG)
+
+## CRT 
+The terminal emulation software the BHSCT uses to access PAS is [CRT by VanDyke Software, Inc](https://www.vandyke.com/download/crt/index.html). CRT allows the user to run scripts in various scripting languages as long as a script engine is installed for a particular scripting language. The only script engine available on BHSCT PCs is Microsoft's VBScript.
+
+# Scripts
+Certain maintenance tasks on CliniCom are done on a very regular basis by the PAS Team for example:
+ * Batch recording deaths on the system, using information from alert emails
+ * Validating phone numbers held on digital patient records
+ * Setting up and maintaining clinic sessions/timeslots
+ * User account maintenance
+ 
+Due to CliniCom being a 24 row x 80 column terminal system, performing these tasks can require a lot of navigation through menus and functions. The purpose of the scripts in **CRT-PAS-Scripts** is to:
+ * Perform full tasks at the single touch of a key
+ * Extract information from the screen and export it to more user friendly format, such as Excel spreadsheets
+ * Assist with navigation
