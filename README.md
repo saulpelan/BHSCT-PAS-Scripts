@@ -5,6 +5,8 @@ This repo is a portfolio of the scripts I have developed for the Belfast Health 
 ## CliniCom Patient Administration System
 The three Belfast Trust hospitals each run on a PAS system called CliniCom, a mainframe system developed roughly in the late 1980s by Shared Medical Systems Limited (SMS UK) and now supported by [DXC Technology](https://dxc.technology). Clinicom was originally designed to be accessed by "dumb" terminals but is now accessed via terminal emulation software on PCs.
 
+![CliniCom AMS Function Set Menu](images/CliniCom%20AMS%20Function%20Set.PNG)
+
 ## CRT 
 The terminal emulation software the BHSCT uses to access PAS is [CRT by VanDyke Software, Inc](https://www.vandyke.com/download/crt/index.html). CRT allows the user to run scripts in various scripting languages as long as a script engine is installed for a particular scripting language. The only script engine available on BHSCT PCs is Microsoft's VBScript.
 
