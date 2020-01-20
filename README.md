@@ -1,4 +1,5 @@
-<img src="images/BHSCT%20Logo%20in%20Colour%20Cropped.jpg" height="50px"></img>
+<img src="images/BHSCT%20Logo%20in%20Colour%20Cropped.jpg" height="50px">
+
 # Introduction
 This repo is a portfolio of the scripts I have developed for the Belfast Health and Social Care Trust PAS (**P**atient **A**dministration **S**ystem) Support Team to aid the maintenance of the three Patient Administration Systems.
 
