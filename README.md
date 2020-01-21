@@ -1,7 +1,7 @@
 <img src="images/BHSCT%20Logo%20in%20Colour%20Cropped.jpg" height="50px">
 
 # Introduction
-This repo is a portfolio of the scripts I have developed for the Belfast Health and Social Care Trust PAS (**P**atient **A**dministration **S**ystem) Support Team to aid the maintenance of the three Patient Administration Systems.
+This repo is a portfolio of the scripts I have developed for the Belfast Health and Social Care Trust PAS (Patient Administration System) Support Team to aid the maintenance of the three Patient Administration Systems.
 
 ## CliniCom Patient Administration System
 The three Belfast Trust hospitals each run on a PAS system called CliniCom, a mainframe system developed roughly in the late 1980s by Shared Medical Systems Limited (SMS UK) and now supported by [DXC Technology](https://dxc.technology). Clinicom was originally designed to be accessed by "dumb" terminals but is now accessed via terminal emulation software on PCs.
@@ -23,4 +23,4 @@ Due to CliniCom being a 24 row x 80 column terminal system, performing these tas
  * Extract information from the screen and export it to more user friendly format, such as Excel spreadsheets
  * Assist with navigation
 
-CRT runs the scripts, which can be mapped to a key or key combination. It provides a small API, with methods for getting text from the screen and sending string to the host. 
+CRT runs the scripts, which can be mapped to a key or key combination. It provides a small API, with methods for getting text from the screen and sending string to the host, which is the foundation of the scripts.
