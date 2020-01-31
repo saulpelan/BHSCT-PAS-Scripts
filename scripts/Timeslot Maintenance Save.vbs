@@ -15,7 +15,8 @@
 '	│ help menu. If there is only one valid appointment type for the clinic it will │
 '	│ select this automatically. Otherwise it will wait for the user to select an	│
 '	│ appointment type in the superhelp list, and then complete the adding of the	│
-'	│ slot.										│
+'	│ slot, automatically filling in the next Timeslot Start time with the End time	│
+'	│ of the previous slot - clever eh?						│
 '	│										│
 '	│ If the user is REVISING an existing timeslot it will save the timeslot the	│
 '	│ way it currently is and then bring the user back to the same field in the same│
@@ -52,8 +53,10 @@ Sub Main()
 			'Check if we are adding a new timeslot
 			If tscmd = "ADD" Then
 				
+				stopTime = GetText(9, 41, 9, 47)
+
 				'Check if Timeslot Stop field is empty
-				If GetText(9, 41, 9, 47) = "" Then
+				If stopTime = "" Then
 					Msg "Must enter stop time when command is ADD"
 
 				'Check if Appt Type field is empty
@@ -93,10 +96,11 @@ Sub Main()
 						Exit Sub
 					End If
 				End If
+				stopTime = GetText(9, 41, 9, 47)
 				SaveTimeslot()
 				GoToField(3)
 				SendSpecial("VT_F14")
-
+				SendNoReturn(stopTime)
 			'Check if we are revising an existing timeslot
 			Elseif tscmd = "REVISE" Then
 
@@ -284,6 +288,15 @@ End Function
 Function Send(ByVal text)
 	If NOT errorState Then
 		crt.Screen.Send text & Chr(13)
+		If InStr(UCase(GetStatusText()), "ERROR") Then
+			errorState = True
+		End If
+	End If
+End Function
+
+Function SendNoReturn(ByVal text)
+	If NOT errorState Then
+		crt.Screen.Send text
 		If InStr(UCase(GetStatusText()), "ERROR") Then
 			errorState = True
 		End If
