@@ -160,8 +160,10 @@ Sub Main()
 			'Check if we are adding a new timeslot
 			If tscmd = "ADD" Then
 				
+				stopTime = GetText(10, 41, 10, 47)
+
 				'Check if Timeslot Stop field is empty
-				If GetText(10, 41, 10, 47) = "" Then
+				If stopTime = "" Then
 					Msg "Must enter stop time when command is ADD"
 
 				'Check if Appt Type field is empty
@@ -201,9 +203,11 @@ Sub Main()
 						Exit Sub
 					End If
 				End If
+				stopTime = GetText(10, 41, 10, 47)
 				SaveTimeslot()
 				GoToField(3)
 				SendSpecial("VT_F14")
+				SendNoReturn(stopTime)
 
 			'Check if we are revising an existing timeslot
 			Elseif tscmd = "REVISE" Then
