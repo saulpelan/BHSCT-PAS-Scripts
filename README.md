@@ -3,6 +3,8 @@
 # Introduction
 This repo is a portfolio of the scripts I have developed for the Belfast Health and Social Care Trust PAS (Patient Administration System) Support Team to aid the maintenance of the three Patient Administration Systems.
 
+[Click here](https://github.com/saulpelan/BHSCT-PAS-Scripts/tree/master/scripts) to view the scripts.
+
 ## CliniCom Patient Administration System
 The three Belfast Trust hospitals each run on a PAS system called CliniCom, a mainframe system developed by Shared Medical Systems Limited (SMS UK) and now supported by [DXC Technology](https://dxc.technology). Clinicom was adopted by trusts in Northern Ireland in 1984/85 and was originally designed to be accessed by "dumb" terminals but is now accessed via terminal emulation software on PCs.
 
