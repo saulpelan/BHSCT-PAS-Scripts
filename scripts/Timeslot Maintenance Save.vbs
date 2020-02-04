@@ -96,11 +96,15 @@ Sub Main()
 						Exit Sub
 					End If
 				End If
-				stopTime = GetText(9, 41, 9, 47)
+				startTime = CDate(GetText(9, 20, 9, 26))
+				stopTime = CDate(GetText(9, 41, 9, 47))
+				duration = CDate(stopTime - startTime)
 				SaveTimeslot()
 				GoToField(3)
 				SendSpecial("VT_F14")
-				SendNoReturn(stopTime)
+				Send(Left(stopTime,5))
+				SendNoReturn(Left(CDate(stopTime + duration), 5))
+
 			'Check if we are revising an existing timeslot
 			Elseif tscmd = "REVISE" Then
 
@@ -203,11 +207,14 @@ Sub Main()
 						Exit Sub
 					End If
 				End If
-				stopTime = GetText(10, 41, 10, 47)
+				startTime = CDate(GetText(10, 20, 10, 26))
+				stopTime = CDate(GetText(10, 41, 10, 47))
+				duration = CDate(stopTime - startTime)
 				SaveTimeslot()
 				GoToField(3)
 				SendSpecial("VT_F14")
-				SendNoReturn(stopTime)
+				Send(Left(stopTime,5))
+				SendNoReturn(Left(CDate(stopTime + duration), 5))
 
 			'Check if we are revising an existing timeslot
 			Elseif tscmd = "REVISE" Then
