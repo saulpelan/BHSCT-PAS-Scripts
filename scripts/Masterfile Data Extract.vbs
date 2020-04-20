@@ -1,4 +1,4 @@
-﻿# $language = "VBScript"
+# $language = "VBScript"
 # $interface = "1.0"
 
 
@@ -35,7 +35,10 @@ Sub Main()
 	End If
 	
 	Select Case GetFunctionTitle()
-		Case "R e p o r t   T o   L o c a t i o n   M a s t e r   F i l e"
+
+		'Function LCM
+		'Had to add a check for "Location code masterfile" as this is the function title on BCH PAS. Not sure how the function seems to have been renamed on BCH, but here we are.
+		Case "R e p o r t   T o   L o c a t i o n   M a s t e r   F i l e", "L o c a t i o n   C o d e   M a s t e r   F i l e"
 
 			'Check that superhelp is open
 			If GetText(7, 44, 7, 60) = "Code  Description" Then
@@ -44,6 +47,8 @@ Sub Main()
 				Msg "Could not locate superhelp list."
 				Exit Sub
 			End If
+		
+		'Function ZBF
 		Case "U s e r   D e f i n e d   F u n c t i o n   S e t s"
 
 			'Check that superhelp is open
@@ -55,6 +60,8 @@ Sub Main()
 				Msg "Could not locate superhelp list."
 				Exit Sub
 			End If
+
+		'Function ZAM
 		Case "C r e a t e   &   A m e n d   A c c o u n t"
 
 			'Check that superhelp is open
@@ -64,6 +71,8 @@ Sub Main()
 				Msg "Could not locate superhelp list."
 				Exit Sub
 			End If
+
+		'Function CLM
 		Case "O P   C l i n i c   M a s t e r   F i l e"
 
 			'Check that superhelp is open
@@ -73,6 +82,8 @@ Sub Main()
 				Msg "Could not locate superhelp list."
 				Exit Sub
 			End If
+
+		'Function DDE
 		Case "D o c u m e n t   D e t a i l   M a s t e r   F i l e"
 
 			'Check that superhelp is open
@@ -82,6 +93,29 @@ Sub Main()
 				Msg "Could not locate superhelp list."
 				Exit Sub
 			End If
+
+		'Function DMM
+		Case "D o c t o r   M a s t e r   F i l e"
+
+			'Check that superhelp is open
+			If GetText(5, 47, 5, 67) = "Code      Description" Then
+				ExcelDump "Doctor", GetEntriesFromScreen(7, 47, 22, 79), 8
+			Else
+				Msg "Could not locate superhelp list."
+				Exit Sub
+			End If
+
+		'Function IDM
+		Case "D i s c h a r g e   A w a i t e d   R e a s o n   M F"
+
+			'Check that superhelp is open
+			If GetText(9, 17, 9, 41) = "Discharge Awaited Reasons" Then
+				ExcelDump "Discharge Awaited Reason", GetEntriesFromScreen(11, 17, 18, 79), 6
+			Else
+				Msg "Could not locate superhelp list."
+				Exit Sub
+			End If
+
 		Case Else
 			Msg "This function or masterfile is not yet supported for superhelp list extraction. Contact Saul Pelan to request it."
 	End Select
@@ -167,7 +201,6 @@ Function ExcelDump(ByVal desc, ByVal list, ByVal codeLength)
 	Set wb = app.Workbooks.Add()
 	Set ws = wb.Worksheets(1)
 	Set window = wb.Windows(1)
-	window.Caption = "CliniCom " & GetActiveHospital() & " " & desc & " Masterfile Extract " & Date
 	ws.Name = "Masterfile Report"
 
 	i = 1
@@ -178,7 +211,10 @@ Function ExcelDump(ByVal desc, ByVal list, ByVal codeLength)
 	Next
 
 	ws.Columns("A:B").AutoFit
+	
+	wb.SaveAs "T:\PM_HealthRec\S_PASSpt\PAS Masterfile Reports\Summaries\" & GetActiveHospital() & "\Clinicom " & GetActiveHospital() & " " & desc & " Masterfile Summary " & Replace(Date, "/", "-")
 	app.Visible = True
+	Msg "Masterfile report has been saved as: " & VbCrLf & VbCrLf & wb.FullName
 End Function
 
 Sub Db(ByVal text)
