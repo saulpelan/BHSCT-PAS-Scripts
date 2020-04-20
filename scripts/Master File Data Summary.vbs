@@ -3,7 +3,7 @@
 
 
 
-'	Script name: Masterfile Data Extract
+'	Script name: Master File Data Summary
 '	Author: Saul Pelan
 '
 '	┌Description────────────────────────────────────────────────────────────────────┐
@@ -22,7 +22,7 @@
 
 
 
-scriptName = "Masterfile Data Extract"
+scriptName = "Master File Data Summary"
 errorState = False
 sleepMilliseconds = 1
 timeoutSeconds = 180
