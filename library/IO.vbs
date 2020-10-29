@@ -17,10 +17,8 @@ Class IO
 	' within the specified timeout seconds.
 
 	Function SendTextAndAwaitCursor(ByVal text, ByVal timeout)
-		'crt.Screen.Synchronous = True
 		crt.Screen.Send text
 		SendTextAndAwaitCursor = crt.Screen.WaitForCursor(timeout) = -1
-		'crt.Screen.Synchronous = False
 	End Function
 
 
@@ -31,8 +29,8 @@ Class IO
 	' screen.
 
 	Function SendCarefully(ByVal text)
+		SendCarefully = True
 		If Not IsError Then
-			SendCarefully = True
 			For Each char In Split(text, "")
 				If Not SendTextAndAwaitCursor(char, 5) Then
 					SendCarefully = False
@@ -61,8 +59,9 @@ Class IO
 	
 
 	' Sends the character to the host that requests the cursor to be moved up
-	' and returns True if a cursor update is detected or False if the cursor
-	' position change is not detected.
+	' 
+	' Returns True if a cursor update is detected or False if the cursor position
+	' change is not detected.
 
 	Function MoveCursorUp()
 		crt.Screen.SendSpecial("VT_CURSOR_UP")
@@ -71,8 +70,9 @@ Class IO
 
 
 	' Sends the character to the host that requests the cursor to be moved left
-	' and returns True if a cursor update is detected or False if the cursor
-	' position change is not detected.
+	' 
+	' Returns True if a cursor update is detected or False if the cursor position
+	' change is not detected.
 
 	Function MoveCursorLeft()
 		crt.Screen.SendSpecial("VT_CURSOR_LEFT")
@@ -81,8 +81,9 @@ Class IO
 
 	
 	' Sends the character to the host that requests the cursor to be moved down
-	' and returns True if a cursor update is detected or False if the cursor
-	' position change is not detected.
+	' 
+	' Returns True if a cursor update is detected or False if the cursor position
+	' change is not detected.
 
 	Function MoveCursorDown()
 		crt.Screen.SendSpecial("VT_CURSOR_DOWN")
@@ -91,8 +92,9 @@ Class IO
 
 
 	' Sends the character to the host that requests the cursor to be moved right
-	' and returns True if a cursor update is detected or False if the cursor
-	' position change is not detected.
+	' 
+	' Returns True if a cursor update is detected or False if the cursor position
+	' change is not detected.
 
 	Function MoveCursorRight()
 		crt.Screen.SendSpecial("VT_CURSOR_RIGHT")
@@ -117,6 +119,7 @@ Class IO
 
 
 	' Attempts to open the superhelp menu.
+	'
 	' Returns True if the superhelp menu is open or False if the superhelp menu
 	' is not detected.
 
@@ -132,10 +135,11 @@ Class IO
 	End Function
 
 
-	' Waits <timeout> seconds to detect a change in the screen text. <screenText> should
-	' be a representation of the entire screen including CrLf's for this to work, where
-	' the entire screen means Row 1, Column 1 to #Rows, #Columns as the screen size may
-	' change.
+	' Waits <timeout> seconds to detect a change in the screen from <screenText>.
+	' <screenText> should be a representation of the entire screen including CrLf's for
+	' this to work, where the entire screen means Row 1, Column 1 to #Rows, #Columns as
+	' the screen size may change.
+	' 
 	' Returns True (immediately) if a screen update is detected within the time given or 
 	' False if the screen does not change within the time given.
 
@@ -150,5 +154,46 @@ Class IO
 		Loop
 	End Function
 	
+
+	' Gets the name/title of the currently open Function.
+	'
+	' Returns the title of the currently open Function
+
+	Function GetTitle()
+		If GetState() = 5 Then
+			GetTitle = Trim(crt.Screen.Get(1, 1, 1, crt.Screen.Columns))
+		End If
+	End Function
+
+
+	' Gets the current state of the user's screen.
+	
+	' Returns	0	-	if terminal/device login screen is active
+	'		1	-	if system login screen is active
+	'		2	-	if user logged out screen is active
+	'		3	-	if Function selection menu is active
+	'		4	-	if Function Set selection menu is active
+	'		5	-	if user is in a Function
+
+	Function GetState()
+		If crt.Screen.Get(2, 1, 2, 5) = "HP-UX" And crt.Screen.Get(4, 1, 4 ,6) = "login:" Then
+			GetState = 0
+		ElseIf crt.Screen.Get(1, 41, 1, 49) = "/dev/pts/" Then
+			If crt.Screen.Get(4, 11, 4, 20) = "Username :" And _
+			  crt.Screen.Get(5, 11, 4, 20) = "Password :" Then
+				GetState = 1
+			ElseIf crt.Screen.Get(4, 7, 4, 20) = "Function Set :" And _
+			  crt.Screen.Get(5, 11, 5, 20) = "Function :" And _
+			  crt.Screen.Get(8, 31, 8, 49) = "Available Functions" Then
+				GetState = 3
+			ElseIf crt.Screen.Get(4, 7, 4, 20) = "Function Set :" And _
+			  crt.Screen.Get(8, 29, 8, 51) = "Available Function Sets" Then
+				GetState = 4
+		ElseIf crt.Screen.Get(19, 33, 19, 48) = "User Logged Out." Then
+			GetState = 2
+		Else
+			GetState = 5
+		End If			
+	End Function
 End Class
 
