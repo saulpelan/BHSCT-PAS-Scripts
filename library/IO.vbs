@@ -189,6 +189,7 @@ Class IO
 			ElseIf crt.Screen.Get(4, 7, 4, 20) = "Function Set :" And _
 			  crt.Screen.Get(8, 29, 8, 51) = "Available Function Sets" Then
 				GetState = 4
+			End If
 		ElseIf crt.Screen.Get(19, 33, 19, 48) = "User Logged Out." Then
 			GetState = 2
 		Else
