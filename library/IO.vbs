@@ -156,12 +156,22 @@ Class IO
 	
 
 	' Gets the name/title of the currently open Function.
+	' If <removeSpacing> is True then the spacing between characters will be removed.
+	' For example: 
+	' 		"C r e a t e   &   A m e n d   A c c o u n t"
+	' 	becomes	"Create & Amend Account"
 	'
-	' Returns the title of the currently open Function
+	' Returns the title of the currently open Function, with letter spacing optionally
+	' removed.
 
-	Function GetTitle()
+	Function GetTitle(ByVal removeSpacing)
 		If GetState() = 5 Then
-			GetTitle = Trim(crt.Screen.Get(1, 1, 1, crt.Screen.Columns))
+			title = Trim(crt.Screen.Get(1, 1, 1, crt.Screen.Columns))
+			If removeSpacing Then
+				GetTitle = Replace(Replace(Replace(title, "   ", "@"), " ", ""), "@", " ")
+			Else
+				GetTitle = title
+			End If
 		End If
 	End Function
 
