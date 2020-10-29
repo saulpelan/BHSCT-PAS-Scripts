@@ -180,7 +180,7 @@ Class IO
 			GetState = 0
 		ElseIf crt.Screen.Get(1, 41, 1, 49) = "/dev/pts/" Then
 			If crt.Screen.Get(4, 11, 4, 20) = "Username :" And _
-			  crt.Screen.Get(5, 11, 4, 20) = "Password :" Then
+			  crt.Screen.Get(5, 11, 5, 20) = "Password :" Then
 				GetState = 1
 			ElseIf crt.Screen.Get(4, 7, 4, 20) = "Function Set :" And _
 			  crt.Screen.Get(5, 11, 5, 20) = "Function :" And _
@@ -197,4 +197,3 @@ Class IO
 		End If			
 	End Function
 End Class
-
