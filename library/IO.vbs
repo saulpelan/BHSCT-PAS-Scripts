@@ -237,4 +237,21 @@ Class IO
 			SendText index, True
 		End If
 	End Sub
+
+	
+	' Attempts to navigate to a field Repeat Group at occurrence number <occurrence> of field
+	' <index>. Both <index> and <occurrence> should be a string representation of an integer.
+
+	Sub GoToFieldOccurrence(ByVal index, ByVal occurrence)
+		If GetState = 5 Then
+			crt.Screen.SendSpecial("VT_F9")
+			screen = crt.Screen.Get2(1, 1, crt.Screen.Rows, crt.Screen.Columns)
+			SendText index, True
+			If WaitForScreenUpdate(screen, 1) Then
+				If crt.Screen.Get(13, 29, 13, 42) = "Occurrence No." Then
+					SendText occurrence, True
+				End If
+			End If
+		End If
+	End Sub
 End Class
