@@ -176,6 +176,17 @@ Class IO
 	End Function
 
 
+	' Gets the title of the currently active Subfunction.
+	'
+	' Returns the title of the currently active Subfunction.
+
+	Function GetSubtitle()
+		If GetState() = 5 Then
+			GetSubtitle = Trim(crt.Screen.Get(2, 1, 2, 60))
+		End If
+	End Function
+
+
 	' Gets the current state of the user's screen.
 	
 	' Returns	0	-	if terminal/device login screen is active
@@ -206,4 +217,24 @@ Class IO
 			GetState = 5
 		End If			
 	End Function
+	
+
+	' Attempts to clear the currently open function and go back to first prompt.
+
+	Sub ResetForm()
+		If GetState = 5 Then
+			crt.Screen.SendSpecial("VT_F8")
+		End If
+	End Sub
+	
+	
+	' Attempts to navigate to the prompt/field at index <index> where <index> is a string
+	' representation of an integer.
+
+	Sub GoToField(ByVal index)
+		If GetState = 5 Then
+			crt.Screen.SendSpecial("VT_F9")
+			SendText index, True
+		End If
+	End Sub
 End Class
