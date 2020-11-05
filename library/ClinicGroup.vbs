@@ -2,14 +2,24 @@ Class ClinicGroup
 
 	Private ioh
 
+	
+	' Initialises the ClinicGroup object as soon as it is created with a link to the
+	' IO class.
+
 	Private Sub Class_Initialize()
 		Include "library/IO.vbs"
 		Set IOHandler = New IO
   	End Sub
 
-	Public Property Set IOHandler(io1)
+
+	' Sets the linked IO object to <io1>.
+
+	Private Property Set IOHandler(io1)
 		Set ioh = io1
 	End Property
+
+
+	' Returns the linked IO object.
 
 	Public Property Get IOHandler()
 		Set IOHandler = ioh
@@ -52,12 +62,16 @@ Class ClinicGroup
 	End Function
 
 
-	' Attempts to navigate to the clinic at index <index>
+	' Attempts to navigate to the clinic at index <index>. <index> should be a 
+	' string representation of an integer.
 	'
 	' Returns True if it was possible to navigate to the chosen index or False
-	' if the attempt failed.
+	' if the attempt failed. 
 
 	Function SelectIndex(ByVal index)
+		If IsEditing Then
+			IOHandler.GoToFieldOccurrence "6", index
+		End If
 	End Function
 	
 
