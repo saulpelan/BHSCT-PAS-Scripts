@@ -248,9 +248,9 @@ Class IO
 			screen = crt.Screen.Get2(1, 1, crt.Screen.Rows, crt.Screen.Columns)
 			SendText index, True
 			If WaitForScreenUpdate(screen, 1) Then
-				If crt.Screen.Get(13, 29, 13, 42) = "Occurrence No." Then
-					SendText occurrence, True
-				End If
+				SendText occurrence, True
+			Else
+				MsgBox "Occurrence No. prompt did not appear."
 			End If
 		End If
 	End Sub
